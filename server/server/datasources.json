@@ -1,0 +1,16 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "thumbnail_db": {
+    "host": "localhost",
+    "port": 3306,
+    "url": "",
+    "database": "thumbnail_db",
+    "password": "thumbnail_pass123",
+    "name": "thumbnail_db",
+    "user": "thumbnail_user",
+    "connector": "mysql"
+  }
+}

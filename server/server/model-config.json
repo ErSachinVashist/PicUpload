@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models"
+    ]
+  },
+  "User": {
+    "dataSource": "db",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "thumbnail_db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "thumbnail_db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "thumbnail_db",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "thumbnail_db",
+    "public": false
+  },
+  "users": {
+    "dataSource": "thumbnail_db",
+    "public": true
+  },
+  "pictures": {
+    "dataSource": "thumbnail_db",
+    "public": true
+  }
+}
