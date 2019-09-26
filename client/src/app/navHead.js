@@ -6,18 +6,17 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import PhotoAlbum from '@material-ui/icons/PhotoAlbum';
-import PersonAdd from '@material-ui/icons/PersonAdd';
+import PeopleAlt from '@material-ui/icons/PeopleAlt';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import {compose} from "recompose";
 import {navCss} from "../helpers/componentStyle";
-import {UserList,UserLogout} from "../actions/userAction";
-
+import {UserLogout} from "../actions/userAction";
 
 class NavHead extends React.Component{
     componentWillMount() {
         let value=0;
         switch (this.props.history.location.pathname) {
-            case '/users':value=1;this.props.UserList();break;
+            case '/users':value=1;break;
             default:value=0;
         }
         this.setState({value})
@@ -35,25 +34,25 @@ class NavHead extends React.Component{
                 value={this.state.value}
                 onChange={(event, value) => {
                     this.setState({value});
-                    let path=''
+                    let path=null;
                     switch (value) {
-                        case 0 : path='/';break;
-                        case 1 :
-                            path='/users';
-                            this.props.UserList()
-                            break;
-                        default : path='/'
+                        case 0 : path='/dashboard';break;
+                        case 1 :path='/users';break;
+                        case 2 :
+                            this.setState({loggingOut:true})
+                            this.props.UserLogout()
+                            ;break;
+                        default : path='/dashboard'
                     }
-                    history.push(path)
+                    if(path){
+                        history.push(path)
+                    }
                 }}
                 showLabels
             >
                 <BottomNavigationAction label="Pictures" icon={<PhotoAlbum />} />
-                <BottomNavigationAction label="Users" icon={<PersonAdd />} />
-                <BottomNavigationAction onClick={()=>{
-                    this.setState({loggingOut:true})
-                    this.props.UserLogout()
-                }} label="Logout" icon={this.state.loggingOut ? <CircularProgress size={17} color='secondary'/>:<ExitToApp />} />
+                <BottomNavigationAction label="Users" icon={<PeopleAlt />} />
+                <BottomNavigationAction label="Logout" icon={this.state.loggingOut ? <CircularProgress size={17} color='secondary'/>:<ExitToApp />} />
             </BottomNavigation>
             :""
 
@@ -66,6 +65,6 @@ export default compose(
     withStyles(navCss),
     connect(store=>({
         user:store.UserReducer
-    }),{UserList,UserLogout})
+    }),{UserLogout})
 )(NavHead);
 

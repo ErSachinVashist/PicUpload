@@ -1,13 +1,15 @@
 import {createAction} from 'redux-starter-kit'
 import { saveState } from '../helpers/localStorage';
-
 import axios from 'axios'
 const userLogin = createAction('UserLogin')
 const userList = createAction('UserList')
+const userAdd = createAction('UserAdd')
 const Api_URL = process.env.REACT_APP_API_URL;
 
+
+
 export const UserLogin = (cred, router) => dispatch => {
-    axios.post(Api_URL + "/users/login?filter[include]=user", cred, {withCredentials: true})
+    axios.post(Api_URL + "/users/userLogin", cred)
         .then((res) => {
             if (res.data.id) {
                 dispatch({
@@ -18,7 +20,7 @@ export const UserLogin = (cred, router) => dispatch => {
                     }
                 });
                 dispatch(userLogin(res.data));
-                router.push('/');
+                router.push('/dashboard');
             }
             else{
                 dispatch(userLogin({}));
@@ -32,12 +34,13 @@ export const UserLogin = (cred, router) => dispatch => {
             }
         })
         .catch((err) => {
+            if(!err.response) return;
             dispatch(userLogin({}));
             dispatch({
                 type:'notify',
                 payload:{
                     type:'error',
-                    message:err.message
+                    message:err.response.data.error.message
                 }
             });
         });
@@ -53,6 +56,7 @@ export const UserLogout = () => dispatch => {
 
         })
         .catch((err) => {
+            if(!err.response) return;
             dispatch({
                 type:'notify',
                 payload:{
@@ -63,19 +67,49 @@ export const UserLogout = () => dispatch => {
         });
 };
 
-export const UserList = () => dispatch => {
-    axios.get(Api_URL + "/users")
+export const UserList = (filter) => dispatch => {
+    axios.get(Api_URL + "/users",{params:{filter}})
         .then((res) => {
             if(res.status===200){
                 dispatch(userList(res.data));
             }
         })
         .catch((err) => {
+            if(!err.response) return;
             dispatch({
                 type:'notify',
                 payload:{
                     type:'error',
                     message:err.message
+                }
+            });
+        });
+};
+
+export const UserAdd = (data) => dispatch => {
+    axios.post(Api_URL + "/users/addUser",data)
+        .then((res) => {
+            if(res.status===200){
+                dispatch(userAdd(res.data));
+                dispatch({
+                    type:'notify',
+                    payload:{
+                        type:'success',
+                        message:'User Added '+res.data.email
+                    }
+                });
+
+
+            }
+        })
+        .catch((err) => {
+            if(!err.response) return;
+            let {error,message}=err.response.data.error
+            dispatch({
+                type:'notify',
+                payload:{
+                    type:'error',
+                    message:message?message:error
                 }
             });
         });

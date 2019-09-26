@@ -1,145 +1,146 @@
-
-const headerCss=(theme)=>({
-        root: {
-            width: '100%',
-        },
-        grow: {
-            flexGrow: 1,
-        },
-        menuButton: {
-            marginLeft: -12,
-            marginRight: 20,
-        },
-        title: {
-            display: 'block',
-            color:'white',
-            fontFamily:"'Kaushan Script', cursive"
-        },
-        linkStyle:{
-            color:'white',
-            textDecoration:'none'
-        },
-        sectionDesktop: {
-            display: 'none',
-            [theme.breakpoints.up('md')]: {
-                display: 'flex',
-            },
-        },
-        sectionMobile: {
+const headerCss = (theme) => ({
+    root: {
+        width: '100%',
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginLeft: -12,
+        marginRight: 20,
+    },
+    title: {
+        display: 'block',
+        color: 'white',
+        fontFamily: "'Kaushan Script', cursive"
+    },
+    linkStyle: {
+        color: 'white',
+        textDecoration: 'none'
+    },
+    sectionDesktop: {
+        display: 'none',
+        [theme.breakpoints.up('md')]: {
             display: 'flex',
-            [theme.breakpoints.up('md')]: {
-                display: 'none',
-            },
         },
-    })
+    },
+    sectionMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
+})
 
-const homeCss=(theme)=>({
-    card: {
-        maxWidth: 400,
-        margin:'0 auto',
-        [theme.breakpoints.down('xs')]:{
-            width:300
-        }
+const picCss = (theme) => ({
+    card: {},
+    noPic: {
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundImage: "url('https://www.hawksearch.com/wp-content/uploads/Developer.png')"
     },
     uploadContent: {
         height: '220px',
-        marginBottom:'25px',
-
+        marginBottom: '23px',
     },
-    cardHead:{
-        textAlign:'center'
-    }
+    cardHead: {
+        textAlign: 'center',
+        borderBottom: '1px solid lightgrey',
+        paddingBottom: 9
+    },
+    tablePaper: {
+        height: 340,
+        overflow: 'auto'
+    },
+    table: {}
 });
 
-const loginCss=(theme)=>({
+const loginCss = (theme) => ({
     paper: {
-        padding:20,
+        padding: 20,
         height: 300,
         width: '30%',
         [theme.breakpoints.down('sm')]: {
             width: '80%',
         },
-        margin:'0 auto',
-        position:'relative'
+        margin: '0 auto',
+        position: 'relative'
     },
     avatar: {
-        left:'37%',
-        border:'8px solid white',
-        top:-50,
+        left: '37%',
+        border: '8px solid white',
+        top: -50,
         height: 100,
         width: 100,
-        background:'slategrey',
-        position:'absolute'
+        background: 'slategrey',
+        position: 'absolute'
     },
-    form:{
-        marginTop:'15%',
-        textAlign:'center'
+    form: {
+        marginTop: '15%',
+        textAlign: 'center'
     },
-    subButton:{
+    subButton: {
         marginTop: 10,
     }
 });
 
-const userCss=(theme)=>({
+const userCss = (theme) => ({
     paper: {
-        padding:20,
-        height: 300,
-        position:'relative'
+        padding: 20,
+        minHeight: 300,
+        position: 'relative'
     },
-    tablePaper:{
+    tablePaper: {
         height: 340,
-        overflow:'auto'
+        overflow: 'auto'
     },
-    table:{
-        padding:20,
+    table: {},
+    form: {
+        textAlign: 'center'
     },
-    form:{
-        textAlign:'center'
-    },
-    subButton:{
+    subButton: {
         marginTop: 10,
     }
 });
 
 
-const profileCss=(theme)=>({
+const profileCss = (theme) => ({
     card: {
         maxWidth: 400,
-        margin:'20px auto',
-        [theme.breakpoints.down('xs')]:{
-            width:300
+        margin: '20px auto',
+        [theme.breakpoints.down('xs')]: {
+            width: 300
         }
     },
     media: {
         height: 0,
         paddingTop: '56.25%', // 16:9
     },
-    cardHead:{
-        textAlign:'center'
+    cardHead: {
+        textAlign: 'center'
     }
 
 });
 
-const navCss=(theme)=>({
-    card: {
-
-    }
+const navCss = (theme) => ({
+    card: {}
 
 });
-const notFoundCss=(theme)=>({
+const notFoundCss = (theme) => ({
     card: {
         maxWidth: 400,
-        margin:'14vh auto',
-        [theme.breakpoints.down('xs')]:{
-            width:300
+        margin: '14vh auto',
+        [theme.breakpoints.down('xs')]: {
+            width: 300
         }
     },
     media: {
         height: 0,
         paddingTop: '56.25%', // 16:9
     },
-    cardHead:{
-        textAlign:'center'
+    cardHead: {
+        textAlign: 'center'
     }
 
 });
@@ -147,7 +148,7 @@ const notFoundCss=(theme)=>({
 
 export {
     headerCss,
-    homeCss,
+    picCss,
     profileCss,
     notFoundCss,
     loginCss,

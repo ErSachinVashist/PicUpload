@@ -9,6 +9,12 @@
     "schema": "thumbnail_db",
     "table": "users"
   },
+  "hidden": [
+    "password"
+  ],
+  "protected": [
+    "password"
+  ],
   "properties": {
     "realm": false,
     "credentials": false,
@@ -73,6 +79,7 @@
       "length": 100,
       "precision": null,
       "scale": null,
+      "pattern": "/[a-z]/g",
       "mysql": {
         "columnName": "email",
         "dataType": "varchar",
@@ -144,6 +151,11 @@
       "model": "Role",
       "foreignKey": "principalId",
       "through": "RoleMapping"
+    },
+    "pictures": {
+      "type": "hasMany",
+      "model": "Pictures",
+      "foreignKey": "userId"
     }
   },
   "acls": [
@@ -158,6 +170,13 @@
       "principalType": "ROLE",
       "principalId": "admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$unauthenticated",
+      "permission": "ALLOW",
+      "property": "userLogin"
     }
   ],
   "methods": {}

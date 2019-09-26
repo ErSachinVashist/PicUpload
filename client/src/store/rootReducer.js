@@ -1,6 +1,6 @@
 import {AuthorReducer} from './authorReducer'
 import {UserReducer,UserListReducer} from './userReducer'
-import {PictureReducer} from './pictureReducer'
+import {PictureListReducer} from './pictureReducer'
 import {NotifyReducer} from './extraReducer'
 import {combineReducers} from 'redux-starter-kit'
 
@@ -8,7 +8,7 @@ const rootReducer=combineReducers({
     AuthorReducer,
     UserReducer,
     UserListReducer,
-    PictureReducer,
+    PictureListReducer,
     NotifyReducer
 })
 const appReducer=(state,action)=>{

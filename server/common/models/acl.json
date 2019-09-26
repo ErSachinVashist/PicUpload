@@ -1,0 +1,138 @@
+{
+  "name": "acl",
+  "base": "ACL",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mysql": {
+    "schema": "thumbnail_db",
+    "table": "ACL"
+  },
+  "properties": {
+    "id": {
+      "type": "Number",
+      "id": true,
+      "required": true,
+      "length": null,
+      "precision": 10,
+      "scale": 0,
+      "mysql": {
+        "columnName": "id",
+        "dataType": "int",
+        "dataLength": null,
+        "dataPrecision": 10,
+        "dataScale": 0,
+        "nullable": "N"
+      },
+      "_selectable": false
+    },
+    "model": {
+      "type": "String",
+      "required": false,
+      "length": 512,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "model",
+        "dataType": "varchar",
+        "dataLength": 512,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "Y"
+      },
+      "_selectable": true
+    },
+    "property": {
+      "type": "String",
+      "required": false,
+      "length": 512,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "property",
+        "dataType": "varchar",
+        "dataLength": 512,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "Y"
+      },
+      "_selectable": true
+    },
+    "accesstype": {
+      "type": "String",
+      "required": false,
+      "length": 512,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "accessType",
+        "dataType": "varchar",
+        "dataLength": 512,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "Y"
+      },
+      "_selectable": true
+    },
+    "permission": {
+      "type": "String",
+      "required": false,
+      "length": 512,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "permission",
+        "dataType": "varchar",
+        "dataLength": 512,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "Y"
+      },
+      "_selectable": true
+    },
+    "principaltype": {
+      "type": "String",
+      "required": false,
+      "length": 512,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "principalType",
+        "dataType": "varchar",
+        "dataLength": 512,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "Y"
+      },
+      "_selectable": true
+    },
+    "principalid": {
+      "type": "String",
+      "required": false,
+      "length": 512,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "principalId",
+        "dataType": "varchar",
+        "dataLength": 512,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "Y"
+      },
+      "_selectable": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

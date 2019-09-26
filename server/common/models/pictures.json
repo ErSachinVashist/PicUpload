@@ -73,38 +73,6 @@
         "dataScale": null,
         "nullable": "N"
       },
-      "size": {
-        "type": "Number",
-        "required": true,
-        "length": null,
-        "precision": 10,
-        "scale": 0,
-        "mysql": {
-          "columnName": "size",
-          "dataType": "int",
-          "dataLength": null,
-          "dataPrecision": 10,
-          "dataScale": 0,
-          "nullable": "N"
-        },
-        "_selectable": false
-      },
-      "convertTime": {
-        "type": "Number",
-        "required": true,
-        "length": null,
-        "precision": 10,
-        "scale": 0,
-        "mysql": {
-          "columnName": "convert_time",
-          "dataType": "int",
-          "dataLength": null,
-          "dataPrecision": 10,
-          "dataScale": 0,
-          "nullable": "Y"
-        },
-        "_selectable": false
-      },
       "_selectable": false
     },
     "addedOn": {
@@ -139,6 +107,56 @@
       },
       "_selectable": true
     },
+    "uploadStatus": {
+      "type": "String",
+      "required": false,
+      "length": 11,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "upload_status",
+        "dataType": "enum",
+        "dataLength": 11,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "Y"
+      },
+      "_selectable": true
+    },
+    "raw": {
+      "type": "String",
+      "required": false,
+      "length": 4294967295,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "raw",
+        "dataType": "longtext",
+        "dataLength": 4294967295,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "N"
+      },
+      "_selectable": false
+    },
+
+    "tempName": {
+      "type": "String",
+      "required": true,
+      "length": 45,
+      "precision": null,
+      "scale": null,
+      "mysql": {
+        "columnName": "temp_name",
+        "dataType": "enum",
+        "dataLength": 45,
+        "dataPrecision": null,
+        "dataScale": null,
+        "nullable": "N"
+      },
+      "_selectable": true
+    },
+
     "convertTime": {
       "type": "Number",
       "required": false,
@@ -157,7 +175,13 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "user": {
+      "type": "belongsTo",
+      "model": "Users",
+      "foreignKey": "userId"
+    }
+  },
   "acls": [
     {
       "accessType": "*",

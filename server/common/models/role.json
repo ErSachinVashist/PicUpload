@@ -1,0 +1,24 @@
+{
+  "name": "role",
+  "base": "Role",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mysql": {
+    "schema": "thumbnail_db",
+    "table": "Role"
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    }
+  ],
+  "methods": {}
+}

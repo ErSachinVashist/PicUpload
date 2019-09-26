@@ -13,6 +13,9 @@ export const UserReducer = createReducer(loadState(), {
 export const UserListReducer = createReducer([], {
     "UserList" : (state, action) => {
         return action.payload;
+    },
+    "UserAdd" : (state, action) => {
+        return [ action.payload,...state]
     }
 })
 

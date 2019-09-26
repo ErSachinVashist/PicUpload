@@ -22,7 +22,7 @@ class Login extends React.Component {
     };
     componentWillMount() {
         if(this.props.userData.isAuthenticated){
-            this.props.history.push('/')
+            this.props.history.push('/dashboard')
         }
     }
 
@@ -53,8 +53,9 @@ class Login extends React.Component {
                     src={require('../../assests/images/user.png')}
                 />
                 <form className={classes.form} onSubmit={this.handleSubmit}>
-                    <Typography variant='h5'>Login</Typography>
+                    <Typography  variant='h5'>Login</Typography>
                     <TextField
+                        required
                         label="Email"
                         type="email"
                         fullWidth
@@ -65,6 +66,7 @@ class Login extends React.Component {
                         variant="outlined"
                     />
                     <TextField
+                        required
                         label="Password"
                         type="password"
                         fullWidth

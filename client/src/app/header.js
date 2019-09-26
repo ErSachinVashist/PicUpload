@@ -1,6 +1,8 @@
 import React from 'react';
+import {connect} from "react-redux";
+import {compose} from "recompose";
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom'
+import RG from 'random-greetings';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -36,9 +38,8 @@ class Header extends React.Component {
 
     render() {
         const {mobileMoreAnchorEl} = this.state;
-        const {classes} = this.props;
+        const {classes,user} = this.props;
         const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
         const renderMobileMenu = (
             <Menu
                 anchorEl={mobileMoreAnchorEl}
@@ -78,12 +79,10 @@ class Header extends React.Component {
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-                        <Tooltip title="Home" placement="bottom">
-                            <Link className={classes.linkStyle} to='/'>
+                        <Tooltip title={user.isAuthenticated && RG.greet()} placement="bottom">
                                 <Typography className={classes.title} variant="h6" color="inherit" noWrap>
-                                    Sachin Vashist
+                                    {user.isAuthenticated ? (user.user.firstName + " " + user.user.lastName) : 'Login to continue'}
                                 </Typography>
-                            </Link>
                         </Tooltip>
                         <div className={classes.grow}/>
                         <div className={classes.sectionDesktop}>
@@ -126,4 +125,10 @@ Header.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(headerCss)(Header);
+
+export default compose(
+    withStyles(headerCss),
+    connect(store=>({
+        user: store.UserReducer
+    }))
+)(Header)
