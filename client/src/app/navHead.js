@@ -10,7 +10,7 @@ import PeopleAlt from '@material-ui/icons/PeopleAlt';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import {compose} from "recompose";
 import {navCss} from "../helpers/componentStyle";
-import {UserLogout} from "../actions/userAction";
+import {UserLogout,UserTokenCheck} from "../actions/userAction";
 
 class NavHead extends React.Component{
     componentWillMount() {
@@ -20,15 +20,14 @@ class NavHead extends React.Component{
             default:value=0;
         }
         this.setState({value})
-
     }
 
     state={
         value : 0,
-    }
+    };
 
     render() {
-        let {user,history}=this.props
+        let {user,history,UserTokenCheck,UserLogout}=this.props
         return user && user.isAuthenticated ?
             <BottomNavigation
                 value={this.state.value}
@@ -36,11 +35,16 @@ class NavHead extends React.Component{
                     this.setState({value});
                     let path=null;
                     switch (value) {
-                        case 0 : path='/dashboard';break;
-                        case 1 :path='/users';break;
+                        case 0 :
+                            path='/dashboard';
+                            UserTokenCheck(user.user?user.user:null);
+                            break;
+                        case 1 :path='/users';
+                            UserTokenCheck(user.user?user.user:null);
+                            break;
                         case 2 :
                             this.setState({loggingOut:true})
-                            this.props.UserLogout()
+                            UserLogout()
                             ;break;
                         default : path='/dashboard'
                     }
@@ -65,6 +69,6 @@ export default compose(
     withStyles(navCss),
     connect(store=>({
         user:store.UserReducer
-    }),{UserLogout})
+    }),{UserLogout,UserTokenCheck})
 )(NavHead);
 

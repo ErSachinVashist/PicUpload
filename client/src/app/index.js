@@ -8,13 +8,17 @@ import routes from './routes'
 import Header from './header'
 import NavHead from './navHead'
 import './app.css'
+import {InitSocket} from "../socket/PubSub";
+import {ReceiveSocketAction} from "../actions/socketAction";
 class App extends Component {
+
     render() {
+        if(this.props.userData.isAuthenticated) InitSocket(this.props.userData.user,this.props.ReceiveSocketAction);
         return (
             <BrowserRouter basename={process.env.PUBLIC_URL}>
                 <MuiThemeProvider theme={theme}>
                     <Header/>
-                    {this.props.user.isAuthenticated && <NavHead/>}
+                    {this.props.userData.isAuthenticated && <NavHead/>}
                     <div className='main-wrapper'>
                         <Switch>
                             {routes}
@@ -29,6 +33,6 @@ class App extends Component {
 
 export default connect( store => {
     return {
-        user: store.UserReducer
-    }})(App);
+        userData: store.UserReducer
+    }},{ReceiveSocketAction})(App);
 

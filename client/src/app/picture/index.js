@@ -21,7 +21,8 @@ import Moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-
+import {SubscribeSocket} from "../../socket/PubSub"
+import {ReceiveSocketAction} from "../../actions/socketAction"
 function getStatus(status) {
     switch(status){
         case 'inprogress' : return <CircularProgress size={20}/>
@@ -38,7 +39,8 @@ class Picture extends React.Component {
     }
 
     componentWillMount() {
-            this.props.PictureList({order: 'pictureId DESC'})
+        this.props.PictureList({order: 'pictureId DESC'});
+        SubscribeSocket({collectionName:'Pictures',method:'POST',token:this.props.userData.user.id},this.props.ReceiveSocketAction)
     }
 
     uploadImage=(picture)=>{
@@ -116,6 +118,7 @@ Picture.propTypes = {
 export default compose(
     withStyles(picCss),
     connect(store=>({
-        picsList:store.PictureListReducer
-    }),{PictureUpload,PictureList})
+        picsList:store.PictureListReducer,
+        userData:store.UserReducer
+    }),{PictureUpload,PictureList,ReceiveSocketAction})
 )(Picture);

@@ -79,7 +79,7 @@ class Header extends React.Component {
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-                        <Tooltip title={user.isAuthenticated && RG.greet()} placement="bottom">
+                        <Tooltip title={user.isAuthenticated ? RG.greet():''} placement="bottom">
                                 <Typography className={classes.title} variant="h6" color="inherit" noWrap>
                                     {user.isAuthenticated ? (user.user.firstName + " " + user.user.lastName) : 'Login to continue'}
                                 </Typography>

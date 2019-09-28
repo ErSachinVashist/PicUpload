@@ -1,6 +1,7 @@
 'use strict';
 let AddUser=require('../../server/custom_modules/users/addUser')
 let UserLogin=require('../../server/custom_modules/users/login')
+let VerifyToken=require('../../server/custom_modules/users/verifyToken')
 
 
 module.exports = function(Users) {
@@ -15,6 +16,10 @@ module.exports = function(Users) {
   Users.addUser = function (data, cb) {
       AddUser(Users, data, cb)
     };
+
+  Users.verifyToken = function (userId,token, cb) {
+    VerifyToken(Users, userId,token, cb)
+  };
 
   Users.remoteMethod(
     'userLogin',
@@ -34,6 +39,19 @@ module.exports = function(Users) {
       description: 'addUser',
       http: {path: '/addUser', verb: 'post'},
       accepts: [{arg: 'data', type: 'object', required: true, http: {source: 'body'}}],
+      returns: {root: true, type: 'object'}
+    }
+  );
+
+  Users.remoteMethod(
+    'verifyToken',
+    {
+      description: 'verifyToken',
+      http: {path: '/:userId/verifyToken/:token', verb: 'get'},
+      accepts: [
+        {arg: 'userId', type: 'number', required: true},
+        {arg: 'token', type: 'string', required: true},
+        ],
       returns: {root: true, type: 'object'}
     }
   );

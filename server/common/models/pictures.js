@@ -1,7 +1,9 @@
 'use strict';
+let ListenToSocket=require('../../socket/initSocket');
 let AddPicture=require('../../server/custom_modules/pictures/addPicture')
 
 module.exports = function(Pictures) {
+  ListenToSocket(Pictures,'Pictures');
 
   Pictures.addPicture = function (req,res,data, cb) {
     AddPicture(Pictures, req,res,data, cb)

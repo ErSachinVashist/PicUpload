@@ -91,16 +91,16 @@
       },
       "_selectable": false
     },
-    "isOriginal": {
+    "picType": {
       "type": "String",
       "required": false,
-      "length": 5,
+      "length": 12,
       "precision": null,
       "scale": null,
       "mysql": {
-        "columnName": "is_original",
+        "columnName": "pic_type",
         "dataType": "enum",
-        "dataLength": 5,
+        "dataLength": 12,
         "dataPrecision": null,
         "dataScale": null,
         "nullable": "Y"
@@ -139,7 +139,6 @@
       },
       "_selectable": false
     },
-
     "tempName": {
       "type": "String",
       "required": true,
@@ -148,7 +147,7 @@
       "scale": null,
       "mysql": {
         "columnName": "temp_name",
-        "dataType": "enum",
+        "dataType": "string",
         "dataLength": 45,
         "dataPrecision": null,
         "dataScale": null,
@@ -156,18 +155,17 @@
       },
       "_selectable": true
     },
-
     "convertTime": {
-      "type": "Number",
+      "type": "String",
       "required": false,
-      "length": null,
+      "length": 45,
       "precision": 10,
       "scale": 0,
       "mysql": {
         "columnName": "convert_time",
-        "dataType": "int",
+        "dataType": "string",
         "dataLength": null,
-        "dataPrecision": 10,
+        "dataPrecision": 45,
         "dataScale": 0,
         "nullable": "Y"
       },
@@ -176,9 +174,9 @@
   },
   "validations": [],
   "relations": {
-    "user": {
+    "users": {
       "type": "belongsTo",
-      "model": "Users",
+      "model": "users",
       "foreignKey": "userId"
     }
   },

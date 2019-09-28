@@ -11,14 +11,23 @@
     "posttest": "npm run lint && npm audit"
   },
   "dependencies": {
+    "add-subtract-date": "^1.0.14",
+    "async-each-series": "^1.1.0",
+    "aws-sdk": "^2.538.0",
     "compression": "^1.0.3",
     "cors": "^2.5.2",
+    "execution-time": "^1.3.0",
+    "foreach": "^2.0.5",
+    "gm": "^1.23.1",
     "helmet": "^3.10.0",
+    "js-remove-property": "^1.0.5",
     "loopback": "^3.22.0",
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^6.2.0",
     "loopback-connector-mysql": "^5.4.2",
     "serve-favicon": "^2.0.1",
+    "socket.io": "^2.3.0",
+    "socketio-auth": "^0.1.1",
     "strong-error-handler": "^3.0.0"
   },
   "devDependencies": {

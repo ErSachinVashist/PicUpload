@@ -13,7 +13,14 @@
   },
   "AccessToken": {
     "dataSource": "thumbnail_db",
-    "public": false
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "users",
+        "foreignKey": "userId"
+      }
+    }
   },
   "ACL": {
     "dataSource": "thumbnail_db",

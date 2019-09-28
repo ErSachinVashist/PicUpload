@@ -1,14 +1,42 @@
-// Copyright IBM Corp. 2016. All Rights Reserved.
-// Node module: loopback-workspace
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
+let boot = require('loopback-boot');
+let loopback = require('loopback');
+let app = module.exports = loopback();
+// const Sentry = require('@sentry/node');
 
-'use strict';
+// if(config.env==='production'){
+//     Sentry.init({ dsn: 'https://a935c8a5bfbb4038b9971395b1dbb6b2@sentry.io/1336664' });
+// }
 
-var loopback = require('loopback');
-var boot = require('loopback-boot');
 
-var app = module.exports = loopback();
+boot(app, __dirname, function(err) {
+  if (err) throw err;
+  if (require.main === module) {
+    app.io = require('socket.io')(app.start());
+    require('socketio-auth')(app.io, {
+      authenticate: function (socket, value, callback) {
+        app.models.AccessToken.find({
+          where:{
+            and: [{ userId: value.userId }, { id: value.id }]
+          }
+        }, function(err, tokenDetail){
+          if (err) throw err;
+          callback(null,{
+            makingAuthConnection:true,
+            userAuth:tokenDetail.length>0
+          })
+        });
+      }
+    })
+    app.io.on('connection', function (socket) {
+      let userIp=socket.handshake?socket.handshake.address:'Unknown'
+      console.log('User connected. IP :',userIp);
+      socket.on('disconnect', function () {
+        console.log(userIp,'user disconnected');
+      });
+    });
+  }
+
+});
 
 app.start = function() {
   // start the web server
@@ -23,12 +51,3 @@ app.start = function() {
   });
 };
 
-// Bootstrap the application, configure models, datasources and middleware.
-// Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
-  if (err) throw err;
-
-  // start the server if `$ node server.js`
-  if (require.main === module)
-    app.start();
-});

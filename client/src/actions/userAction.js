@@ -34,22 +34,35 @@ export const UserLogin = (cred, router) => dispatch => {
             }
         })
         .catch((err) => {
-            if(!err.response) return;
             dispatch(userLogin({}));
+            if(!err.response) return;
+            let {error,message}=err.response.data.error
             dispatch({
                 type:'notify',
                 payload:{
                     type:'error',
-                    message:err.response.data.error.message
+                    message:message?message:error
                 }
             });
         });
 };
 
-export const UserLogout = () => dispatch => {
+export const UserLogout = (autoLogout) => dispatch => {
+    if(autoLogout){
+        saveState({})
+        return window.location.reload();
+
+    }
     axios.post(Api_URL + "/users/logout")
         .then((res) => {
             if(res.status===204){
+                dispatch({
+                    type:'notify',
+                    payload:{
+                        type:'error',
+                        message:"You have been Logget Out"
+                    }
+                });
                 saveState({})
                 window.location.reload();
             }
@@ -57,11 +70,12 @@ export const UserLogout = () => dispatch => {
         })
         .catch((err) => {
             if(!err.response) return;
+            let {error,message}=err.response.data.error
             dispatch({
                 type:'notify',
                 payload:{
                     type:'error',
-                    message:err.message
+                    message:message?message:error
                 }
             });
         });
@@ -76,11 +90,12 @@ export const UserList = (filter) => dispatch => {
         })
         .catch((err) => {
             if(!err.response) return;
+            let {error,message}=err.response.data.error
             dispatch({
                 type:'notify',
                 payload:{
                     type:'error',
-                    message:err.message
+                    message:message?message:error
                 }
             });
         });
@@ -98,9 +113,30 @@ export const UserAdd = (data) => dispatch => {
                         message:'User Added '+res.data.email
                     }
                 });
-
-
             }
+        })
+        .catch((err) => {
+            if(!err.response) return;
+            let {error,message}=err.response.data.error
+            dispatch({
+                type:'notify',
+                payload:{
+                    type:'error',
+                    message:message?message:error
+                }
+            });
+        });
+};
+
+export const UserTokenCheck = (user) => dispatch => {
+    if(!user){
+        dispatch(UserLogout(true))
+    }
+    axios.get(Api_URL + `/users/${user.userId}/verifyToken/${user.id}`)
+        .then((res) => {
+           if(!res.data || !res.data.valid){
+               dispatch(UserLogout(true))
+           }
         })
         .catch((err) => {
             if(!err.response) return;

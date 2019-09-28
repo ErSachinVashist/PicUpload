@@ -42,6 +42,6 @@ Profile.propTypes = {
 export default compose(
     withStyles(profileCss),
     connect(store=>({
-        author:store.AuthorReducer
+        userData:store.UserReducer
     }),{ChangeAuthor})
 )(Profile);

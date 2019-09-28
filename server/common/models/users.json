@@ -141,11 +141,6 @@
   },
   "validations": [],
   "relations": {
-    "accessToken": {
-      "type": "hasMany",
-      "model": "AccessToken",
-      "foreignKey": "userId"
-    },
     "roles": {
       "type": "hasMany",
       "model": "Role",
@@ -155,6 +150,11 @@
     "pictures": {
       "type": "hasMany",
       "model": "Pictures",
+      "foreignKey": "userId"
+    },
+    "accessTokens": {
+      "type": "hasMany",
+      "model": "AccessToken",
       "foreignKey": "userId"
     }
   },
@@ -177,6 +177,13 @@
       "principalId": "$unauthenticated",
       "permission": "ALLOW",
       "property": "userLogin"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "verifyToken"
     }
   ],
   "methods": {}
