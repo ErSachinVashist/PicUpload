@@ -2,7 +2,6 @@ import {createAction} from 'redux-starter-kit'
 import axios from 'axios'
 const Api_URL = process.env.REACT_APP_API_URL;
 
-const pictureUpload = createAction('PictureUpload')
 const pictureList = createAction('PictureList')
 
 export const PictureList = (filter) => dispatch => {
@@ -27,7 +26,7 @@ export const PictureList = (filter) => dispatch => {
 export const PictureUpload = (blob) => dispatch => {
     axios.post(Api_URL + "/pictures/addPicture", {blob})
         .then(res => {
-            dispatch(pictureUpload(res.data))
+            // dispatch(pictureUpload(res.data))
             dispatch({
                 type:'notify',
                 payload:{

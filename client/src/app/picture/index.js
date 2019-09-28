@@ -37,10 +37,10 @@ class Picture extends React.Component {
         pictures:'',
         picError:false
     }
-
     componentWillMount() {
         this.props.PictureList({order: 'pictureId DESC'});
-        SubscribeSocket({collectionName:'Pictures',method:'POST',token:this.props.userData.user.id},this.props.ReceiveSocketAction)
+        SubscribeSocket('Pictures',null,'PUT',this.props.userData.user.id,this.props.ReceiveSocketAction)
+        SubscribeSocket('Pictures',null,'POST',this.props.userData.user.id,this.props.ReceiveSocketAction)
     }
 
     uploadImage=(picture)=>{
