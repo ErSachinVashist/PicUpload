@@ -17,6 +17,7 @@ RUN yum install wget vim screen ImageMagick -y
 RUN mkdir -p /root/sachin
 COPY . /root/sachin
 RUN cd /root/sachin; npm install; npm install loopback -g; npm install pm2 -g
+RUN echo "/bin/bash /root/BreezeLoopback/setup_server.sh" >> /root/.bashrc
 EXPOSE 3000
 
 CMD /root/sachin/setup_server.sh

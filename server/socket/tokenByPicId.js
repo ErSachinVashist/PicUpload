@@ -1,4 +1,4 @@
-let app=require('../../server');
+let app=require('../server/server');
 let forEach=require('foreach');
 const addSubtractDate = require("add-subtract-date");
 let removeProp = require('js-remove-property');

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-pm2 start server/server.js
-pm2 start workers/workerQueue.js
+pm2 start /root/sachin/server/server.js
+pm2 start /root/sachin/workers/workerQueue.js
