@@ -2,112 +2,93 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {compose} from "recompose";
 import {connect} from "react-redux";
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import CloudDone from '@material-ui/icons/CloudDone';
-import Error from '@material-ui/icons/Error';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import {picCss} from '../../helpers/componentStyle';
-import {PictureUpload,PictureList} from '../../actions/pictureAction';
+import {PictureUpload, PictureList} from '../../actions/pictureAction';
 import AvatarImageCropper from 'react-avatar-image-cropper';
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TableBody from "@material-ui/core/TableBody";
-import Moment from "moment";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import {SubscribeSocket} from "../../socket/PubSub"
 import {ReceiveSocketAction} from "../../actions/socketAction"
-function getStatus(status) {
-    switch(status){
-        case 'inprogress' : return <CircularProgress size={20}/>
-        case 'done' : return <CloudDone style={{color:'darkgreen'}}/>
-        case 'error' : return <Error color="error"/>
-        default: return <CircularProgress size={20}/>
-    }
-}
+import PicModel from "./picsModel"
+import DisplayPics from '../../helpers/displayPics';
 
 class Picture extends React.Component {
-    state={
-        pictures:'',
-        picError:false
+    state = {
+        pictures: '',
+        selectedPic:null,
+        picError: false,
+        openPicModel: false,
+        addingPic:false
     }
-    componentWillMount() {
-        this.props.PictureList({order: 'pictureId DESC'});
-        SubscribeSocket('Pictures',null,'PUT',this.props.userData.user.id,this.props.ReceiveSocketAction)
-        SubscribeSocket('Pictures',null,'POST',this.props.userData.user.id,this.props.ReceiveSocketAction)
+    handlePicModel = (val,pic) => {
+        this.setState({openPicModel: val && pic && pic.uploadStatus==='done',selectedPic:pic})
     }
 
-    uploadImage=(picture)=>{
-        this.setState({
-            picError:null
-        });
-        let that=this
-        let reader = new FileReader();
-        reader.readAsDataURL(picture);
-        reader.onloadend = function() {
-            that.props.PictureUpload(reader.result)
+    componentWillMount() {
+        this.props.PictureList({order: 'pictureId DESC'});
+        SubscribeSocket('Pictures', null, 'PUT', this.props.userData.user.id, this.props.ReceiveSocketAction)
+        SubscribeSocket('Pictures', null, 'POST', this.props.userData.user.id, this.props.ReceiveSocketAction)
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if(nextProps.picsList.length>this.props.picsList.length){
+            document.getElementById('picPaper').scrollTop = 0;
+            this.setState({addingPic:false})
         }
     }
-    errorHandler=(err)=>{
+
+    uploadImage = (picture) => {
         this.setState({
-            picError:"Couldnot process your image"
+            picError: null
+        });
+        let that = this
+        let reader = new FileReader();
+        reader.readAsDataURL(picture);
+        reader.onloadend = function () {
+            that.props.PictureUpload(reader.result)
+            that.setState({addingPic:true})
+        }
+    }
+    errorHandler = (err) => {
+        this.setState({
+            picError: "Couldnot process your image : "+err+' found'
         })
     }
 
-    picList(pics, classes) {
-        return <Table stickyHeader className={classes.table}>
-            <TableHead>
-                <TableRow>
-                    <TableCell>Temp Name</TableCell>
-                    <TableCell>Added On</TableCell>
-                    <TableCell>Status</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {pics.map((pic, index) => (
-                    <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                            {pic.tempName}
-                        </TableCell>
-                        <TableCell>{Moment(pic.addedOn).format('MMM Do YY')}</TableCell>
-                        <TableCell>{getStatus(pic.uploadStatus)}</TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
-    }
-
     render() {
-        const {classes,picsList}=this.props;
-        const { picError } = this.state;
+        const {classes, picsList} = this.props;
+        const {picError, openPicModel,selectedPic,addingPic} = this.state;
 
-        return (
-            <Grid container spacing={4} justify='center'>
-                <Grid item xs={12} md={5}>
-                    <Paper className={`${classes.tablePaper} ${picsList.length===0 && classes.noPic}`}>
-                        {picsList.length>0 && this.picList(picsList, classes)}
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} md={5}>
-                    <Card className={classes.card}>
-                        <CardHeader
-                            className={classes.cardHead}
-                            title='Image Uploader'
-                        />
-                        <CardContent onClick={()=>this.setState({picError:null})} className={classes.uploadContent}>
-                            <AvatarImageCropper apply={this.uploadImage} errorHandler={this.errorHandler} isBack={true}/>
-                            {picError && <Typography align='center' variant='body1' style={{color: 'brown'}}>{picError}</Typography>}
-                        </CardContent>
-                    </Card>
-                </Grid>
-                </Grid>
-        );
+        return [<Grid container spacing={4} justify='center' key='picTable'>
+            <Grid item xs={12} md={5}>
+                <Paper id='picPaper' className={`${classes.mainPaper} ${picsList.length === 0 && classes.noPic}`}>
+                    {!picsList.loading?picsList.length > 0 && <DisplayPics pics={picsList} classes={classes} handlePicModel={this.handlePicModel}/>:
+                        <img width='100%' src='https://miro.medium.com/max/1158/1*9EBHIOzhE1XfMYoKz1JcsQ.gif' alt='sachin'/>
+                    }
+                </Paper>
+            </Grid>
+            <Grid item xs={12} md={5}>
+                <Card className={classes.card}>
+                    <CardHeader
+                        className={classes.cardHead}
+                        title='Image Uploader'
+                    />
+                    <CardContent style={{pointerEvents:addingPic?'none':''}} onClick={() => this.setState({picError: null})} className={classes.uploadContent}>
+                        <AvatarImageCropper apply={this.uploadImage} errorHandler={this.errorHandler} isBack={true}/>
+                        {picError && <Typography align='center' variant='body1' style={{color: 'brown'}}>{picError}</Typography>}
+                        {addingPic && <Typography align='center' variant='body1' ><img height={100} style={{marginTop:-25}}  src='https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-6d0b072c3d3f.gif' alt='sachin'/></Typography>}
+
+                    </CardContent>
+                </Card>
+            </Grid>
+        </Grid>,
+            openPicModel  && <PicModel key='picModel' open={openPicModel} handlePicModel={this.handlePicModel} selectedPic={selectedPic}/>
+        ]
     }
 }
 
@@ -117,8 +98,8 @@ Picture.propTypes = {
 
 export default compose(
     withStyles(picCss),
-    connect(store=>({
-        picsList:store.PictureListReducer,
-        userData:store.UserReducer
-    }),{PictureUpload,PictureList,ReceiveSocketAction})
+    connect(store => ({
+        picsList: store.PictureListReducer,
+        userData: store.UserReducer
+    }), {PictureUpload, PictureList, ReceiveSocketAction})
 )(Picture);

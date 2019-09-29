@@ -3,17 +3,14 @@ import {compose} from "recompose";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableHead from '@material-ui/core/TableHead';
-import TableCell from '@material-ui/core/TableCell';
-import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
+import Avatar from '@material-ui/core/Avatar';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Moment from 'moment';
 import {userCss} from "../../helpers/componentStyle";
 import {UserList, UserAdd} from "../../actions/userAction";
 
@@ -29,18 +26,29 @@ const user = {
     cpassword: ''
 }
 
+function showUser(user, classes) {
+    return <Card key={user.userId} className={classes.userCard}>
+        <CardHeader
+            avatar={
+                <Avatar style={{width:60,height:60}} src='https://cdn3.iconfinder.com/data/icons/business-avatar-1/512/10_avatar-512.png'/>
+            }
+            title={user.firstName + ' ' + user.lastName}
+            subheader={user.email}
+        />
+    </Card>
+}
+
 class UsersList extends React.Component {
-    state = {user, formError: null};
+    state = {user, formError: null, addingUser: false};
 
     componentWillMount() {
-        if (isAdmin(this.props.userData.user)) {
-            this.props.UserList({order: 'userId DESC'})
-        }
+        this.props.UserList({order: 'userId DESC'}, isAdmin(this.props.userData.user))
     }
 
     handleSubmit = (e) => {
         e.preventDefault()
         if (this.state.user.password === this.state.user.cpassword) {
+            this.setState({addingUser: true})
             this.props.UserAdd(this.state.user)
         } else {
             this.setState({formError: 'Password didnot match'})
@@ -54,46 +62,44 @@ class UsersList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.userList.length > this.props.userList.length) {
-            this.setState({user})
-        }
+        this.setState({user, addingUser: false})
     }
 
-    usersList(users, classes) {
-        if (users.length === 0) {
-            users = [this.props.userData.user]
-        }
-        return <Table stickyHeader className={classes.table}>
-            <TableHead>
-                <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Email</TableCell>
-                    <TableCell>Added On</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {users.map((user, index) => (
-                    <TableRow key={index}>
-                        <TableCell component="th" scope="row">
-                            {user.firstName + ' ' + user.lastName}
-                        </TableCell>
-                        <TableCell>{user.email}</TableCell>
-                        <TableCell>{Moment(user.addedOn).format('MMM Do YY')}</TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
-    }
-
+    // usersList(users, classes) {
+    //     return <Table stickyHeader className={classes.table}>
+    //         <TableHead>
+    //             <TableRow>
+    //                 <TableCell>Name</TableCell>
+    //                 <TableCell>Email</TableCell>
+    //                 <TableCell>Added On</TableCell>
+    //             </TableRow>
+    //         </TableHead>
+    //         <TableBody>
+    //             {users.map((user, index) => (
+    //                 <TableRow key={index}>
+    //                     <TableCell component="th" scope="row">
+    //                         {user.firstName + ' ' + user.lastName}
+    //                     </TableCell>
+    //                     <TableCell>{user.email}</TableCell>
+    //                     <TableCell>{Moment(user.addedOn).format('MMM Do YY')}</TableCell>
+    //                 </TableRow>
+    //             ))}
+    //         </TableBody>
+    //     </Table>
+    // }
     render() {
         const {classes, userList, userData} = this.props;
-        let {user, formError} = this.state
+        let {user, formError, addingUser} = this.state
         return (
             <Grid container spacing={4} justify='center'>
                 <Grid item xs={12} md={5}>
-                    <Paper className={classes.tablePaper}>
-                        {this.usersList(userList, classes)}
+                    <Paper className={classes.mainPaper}>
+                        {userList.loading ?
+                            <img width='100%' src='https://miro.medium.com/max/1158/1*9EBHIOzhE1XfMYoKz1JcsQ.gif' alt='sachin'/> :
+                            isAdmin(this.props.userData.user) ? userList.map((user,index)=>showUser(user,classes)): showUser(userList[0], classes)
+                        }
                     </Paper>
+
                 </Grid>
                 {isAdmin(userData.user) && <Grid item xs={12} md={5}>
                     <Paper className={classes.paper}>
@@ -165,9 +171,10 @@ class UsersList extends React.Component {
 
                             </Grid>
                             {formError && <Typography variant='body1' style={{color: 'brown'}}>{formError}</Typography>}
-                            <Button size="medium" variant='contained' color='primary' type='submit'
+                            <Button disabled={addingUser} size="medium" variant='contained' color='primary'
+                                    type='submit'
                                     className={classes.subButton}>
-                                Add
+                                {addingUser ? 'Adding ...' : 'Add'}
                             </Button>
                             &nbsp;
                         </form>

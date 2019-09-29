@@ -1,4 +1,5 @@
 let boot = require('loopback-boot');
+let path = require('path');
 let loopback = require('loopback');
 let app = module.exports = loopback();
 // const Sentry = require('@sentry/node');
@@ -7,6 +8,18 @@ let app = module.exports = loopback();
 //     Sentry.init({ dsn: 'https://a935c8a5bfbb4038b9971395b1dbb6b2@sentry.io/1336664' });
 // }
 
+const staticRoot = path.resolve(__dirname, '..', 'client');
+
+app.all('/*', function(req, res, next) {
+  if (req.url.startsWith('/api')) {
+    return next();
+  }
+  let isAsset = req.url.match(/\/(.*\.(js|css|map|png|svg|jpg|xlsx))\??/);
+  if (isAsset) {
+    return res.sendFile(isAsset[1], {root: staticRoot });
+  }
+  res.sendFile('index.html', { root: staticRoot });
+});
 
 boot(app, __dirname, function(err) {
   if (err) throw err;

@@ -12,7 +12,7 @@
     "public": false
   },
   "AccessToken": {
-    "dataSource": "thumbnail_db",
+    "dataSource": "tp_database",
     "public": false,
     "relations": {
       "user": {
@@ -23,23 +23,27 @@
     }
   },
   "ACL": {
-    "dataSource": "thumbnail_db",
+    "dataSource": "tp_database",
     "public": false
   },
   "RoleMapping": {
-    "dataSource": "thumbnail_db",
+    "dataSource": "tp_database",
     "public": false
   },
   "Role": {
-    "dataSource": "thumbnail_db",
+    "dataSource": "tp_database",
     "public": false
   },
   "users": {
-    "dataSource": "thumbnail_db",
+    "dataSource": "tp_database",
     "public": true
   },
   "pictures": {
-    "dataSource": "thumbnail_db",
+    "dataSource": "tp_database",
+    "public": true
+  },
+  "editpictures": {
+    "dataSource": "tp_database",
     "public": true
   }
 }

@@ -6,7 +6,7 @@
     "validateUpsert": true
   },
   "mysql": {
-    "schema": "thumbnail_db",
+    "schema": "tp_database",
     "table": "pictures"
   },
   "properties": {
@@ -91,22 +91,6 @@
       },
       "_selectable": false
     },
-    "picType": {
-      "type": "String",
-      "required": false,
-      "length": 12,
-      "precision": null,
-      "scale": null,
-      "mysql": {
-        "columnName": "pic_type",
-        "dataType": "enum",
-        "dataLength": 12,
-        "dataPrecision": null,
-        "dataScale": null,
-        "nullable": "Y"
-      },
-      "_selectable": true
-    },
     "uploadStatus": {
       "type": "String",
       "required": false,
@@ -178,6 +162,11 @@
       "type": "belongsTo",
       "model": "users",
       "foreignKey": "userId"
+    },
+    "editpictures": {
+      "type": "hasMany",
+      "model": "editpictures",
+      "foreignKey": "pictureId"
     }
   },
   "acls": [
@@ -190,8 +179,15 @@
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "$authenticated",
+      "principalId": "admin",
       "permission": "ALLOW"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": ["getOrgPics","addPicture","getAllEditPics"]
     }
   ],
   "methods": {}

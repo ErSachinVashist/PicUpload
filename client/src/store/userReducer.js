@@ -10,7 +10,7 @@ export const UserReducer = createReducer(loadState(), {
     }
 })
 
-export const UserListReducer = createReducer([], {
+export const UserListReducer = createReducer({loading:true}, {
     "UserList" : (state, action) => {
         return action.payload;
     },

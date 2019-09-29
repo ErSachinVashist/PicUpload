@@ -6,7 +6,7 @@
     "validateUpsert": true
   },
   "mysql": {
-    "schema": "thumbnail_db",
+    "schema": "tp_database",
     "table": "RoleMapping"
   },
   "properties": {

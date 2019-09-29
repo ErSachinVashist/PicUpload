@@ -1,6 +1,6 @@
 import {createReducer} from 'redux-starter-kit'
 
-export const PictureListReducer = createReducer([], {
+export const PictureListReducer = createReducer({loading:true}, {
     "PictureList" : (state, action) => {
         return action.payload;
     },
@@ -10,6 +10,13 @@ export const PictureListReducer = createReducer([], {
     },
     "PictureUpload" : (state, action) => {
         return [ action.payload,...state]
+    }
+})
+
+
+export const PictureEditsListReducer = createReducer([], {
+    "PictureEditsList" : (state, action) => {
+        return action.payload;
     }
 })
 

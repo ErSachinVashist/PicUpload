@@ -49,12 +49,25 @@ const picCss = (theme) => ({
         borderBottom: '1px solid lightgrey',
         paddingBottom: 9
     },
-    tablePaper: {
+    mainPaper: {
         height: 340,
-        overflow: 'auto'
+        textAlign:'center',
+        overflowY: 'auto',
+        overflowX: 'hidden',
     },
-    table: {}
 });
+
+const picModelCss=(theme)=>({
+    closeButton:{
+        float:'right',
+        padding:'2px',
+        borderRadius:2
+    },
+    modelTitle:{
+        background:'slategrey',
+        color:'white',
+    }
+})
 
 const loginCss = (theme) => ({
     paper: {
@@ -91,11 +104,15 @@ const userCss = (theme) => ({
         minHeight: 300,
         position: 'relative'
     },
-    tablePaper: {
+    mainPaper: {
+        background:'whitesmoke',
         height: 340,
         overflow: 'auto'
     },
-    table: {},
+    userCard: {
+        width:'98%',
+margin: '5px auto'
+    },
     form: {
         textAlign: 'center'
     },
@@ -104,24 +121,6 @@ const userCss = (theme) => ({
     }
 });
 
-
-const profileCss = (theme) => ({
-    card: {
-        maxWidth: 400,
-        margin: '20px auto',
-        [theme.breakpoints.down('xs')]: {
-            width: 300
-        }
-    },
-    media: {
-        height: 0,
-        paddingTop: '56.25%', // 16:9
-    },
-    cardHead: {
-        textAlign: 'center'
-    }
-
-});
 
 const navCss = (theme) => ({
     card: {}
@@ -149,7 +148,7 @@ const notFoundCss = (theme) => ({
 export {
     headerCss,
     picCss,
-    profileCss,
+    picModelCss,
     notFoundCss,
     loginCss,
     userCss,

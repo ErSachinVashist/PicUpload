@@ -81,7 +81,11 @@ export const UserLogout = (autoLogout) => dispatch => {
         });
 };
 
-export const UserList = (filter) => dispatch => {
+export const UserList = (filter,isAdmin) => (dispatch,getState) => {
+    dispatch(userList({loading:true}));
+    if(!isAdmin){
+        return dispatch(userList([getState().UserReducer.user]));
+    }
     axios.get(Api_URL + "/users",{params:{filter}})
         .then((res) => {
             if(res.status===200){
@@ -101,7 +105,7 @@ export const UserList = (filter) => dispatch => {
         });
 };
 
-export const UserAdd = (data) => dispatch => {
+export const UserAdd = (data) => (dispatch,getState) => {
     axios.post(Api_URL + "/users/addUser",data)
         .then((res) => {
             if(res.status===200){
@@ -118,6 +122,8 @@ export const UserAdd = (data) => dispatch => {
         .catch((err) => {
             if(!err.response) return;
             let {error,message}=err.response.data.error
+
+            dispatch(userList([...getState().UserListReducer]));
             dispatch({
                 type:'notify',
                 payload:{

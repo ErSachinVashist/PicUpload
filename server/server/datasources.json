@@ -3,14 +3,14 @@
     "name": "db",
     "connector": "memory"
   },
-  "thumbnail_db": {
-    "host": "localhost",
+  "tp_database": {
+    "host": "remotemysql.com",
     "port": 3306,
     "url": "",
-    "database": "thumbnail_db",
-    "password": "thumbnail_pass123",
-    "name": "thumbnail_db",
-    "user": "thumbnail_user",
+    "database": "2qCwyTLbNm",
+    "password": "Ej3CXoDDts",
+    "name": "tp_database",
+    "user": "2qCwyTLbNm",
     "connector": "mysql"
   }
 }
