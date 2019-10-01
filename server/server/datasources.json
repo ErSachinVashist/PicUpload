@@ -12,5 +12,14 @@
     "name": "tp_database",
     "user": "2qCwyTLbNm",
     "connector": "mysql"
+  },
+  "tp_redis": {
+    "host": "SG-test-26228.servers.mongodirector.com",
+    "port": 6379,
+    "url": "",
+    "password": "4m8Bf5qsrNus3uu8DEnsFRFyuCx14itg",
+    "name": "tp_redis",
+    "db": 1,
+    "connector": "kv-redis"
   }
 }

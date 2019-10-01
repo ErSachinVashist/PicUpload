@@ -2,7 +2,7 @@ const fs = require('fs');
 const gm = require('gm').subClass({imageMagick: true});
 const perf = require('execution-time')();
 const AWS = require('aws-sdk');
-
+const config=require('../config')
 let removeProp = require('js-remove-property');
 let PushToQueue = require('./pushToQueue');
 let s3 = new AWS.S3({apiVersion: '2006-03-01'});
@@ -93,7 +93,7 @@ function uploadToS3(folder, name, imagePath,finalObj, next) {
     removeProp('Body', s3params);
     s3.getObject(s3params, function(err, picObj) {
       if (err) return console.log(err);
-      PushToQueue({...finalObj,url: uploadPic.Location, size: picObj.ContentLength,picType:folder},'tp-w2-queue',next);
+      PushToQueue({...finalObj,url: uploadPic.Location, size: picObj.ContentLength,picType:folder},config.w2queue,next);
     });
 
   });

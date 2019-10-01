@@ -1,6 +1,6 @@
 {
   "name": "editpictures",
-  "base": "PersistedModel",
+  "base": "KeyValueModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true

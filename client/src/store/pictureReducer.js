@@ -5,7 +5,9 @@ export const PictureListReducer = createReducer({loading:true}, {
         return action.payload;
     },
     "PictureListUpdate" : (state, action) => {
-        state = state.map(function(item) { return item.pictureId === action.payload.pictureId ? action.payload : item; });
+        state=JSON.parse(JSON.stringify(state))
+        state = state.map(function(item) {
+            return parseInt(item.pictureId) === parseInt(action.payload.pictureId) ? action.payload : item; });
         return state;
     },
     "PictureUpload" : (state, action) => {

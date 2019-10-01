@@ -26,16 +26,17 @@ module.exports=function(app) {
 
 function processMessage(message,app) {
   const picData = JSON.parse(message.Body),url=picData.url;
+  console.log(picData)
   let SaveReq={};
-  // removeProp('url',picData);
+  // removeProp(picData.url);
   if (picData.picType === 'original') {
     SaveReq=app.models.Pictures.upsertWithWhere({pictureId: picData.pictureId}, picData)
   } else {
-    SaveReq=app.models.Editpictures.create(picData)
+    SaveReq=app.models.Editpictures.create({pictureId: picData.pictureId}, picData)
   }
   SaveReq.then(function(data,err) {
     if (err) return console.log(err);
-    storeUrl(app,(picData.picType?picData.picType:'original')+picData.tempName+'_url',url,function() {
+    storeUrl((app,picData.picType?picData.picType:'org')+picData.tempName+'_url',url,function() {
       gotAllPics(app,picData);
     })
   })

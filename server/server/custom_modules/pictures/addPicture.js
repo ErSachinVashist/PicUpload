@@ -1,4 +1,5 @@
 const fs = require('fs');
+const config=require('../../../config')
 let PushToQueue = require('../../../workers/pushToQueue');
 let error1 = new Error('Error in uploading image file');
 module.exports = function(Pictures, req, res, data, cb) {
@@ -19,7 +20,7 @@ module.exports = function(Pictures, req, res, data, cb) {
     pic=pic.toJSON();
     let queueObj=Object.assign({},pic);
     queueObj.base64Data=data.blob.replace(/^data:image\/png;base64,/, '');
-    PushToQueue(queueObj,'tp-w1-queue',function(err) {
+    PushToQueue(queueObj,config.w1queue,function(err) {
       if(err){
         Pictures.upsertWithWhere({pictureId:pic.pictureId},{uploadStatus:'error',raw:JSON.stringify(err)},function(err2) {
           if(err) return console.log(err2)

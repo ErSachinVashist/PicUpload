@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
-let forEach=require('foreach');
+const app = require('../../server');
+let each=require('async-each-series');
 let removeProp = require('js-remove-property');
 let s3 = new AWS.S3({apiVersion: '2006-03-01'});
 const params={
@@ -9,7 +10,6 @@ const params={
 let error1 = new Error('No Picture Found with this Id');
 
 module.exports = function (Pictures,pictureId,req,cb) {
-  console.log()
   Pictures.findOne({where:{and:[{pictureId:pictureId},{userId:req.accessToken.userId}]},include:['editpictures']}).then(function(pic,err) {
     if(err && !pic){
       console.log(err);
@@ -17,17 +17,27 @@ module.exports = function (Pictures,pictureId,req,cb) {
     }
     pic=pic.toJSON();
     let picJson=Object.assign({},pic);
-    params.Key='original/original_'+pic.tempName;
-    picJson.url=s3.getSignedUrl('getObject', params)
-    removeProp('editpictures',picJson)
-    let editPicsArray=[picJson];
-
-    forEach(pic.editpictures,function(editPic) {
-      params.Key=editPic.picType+'/'+editPic.picType+'_'+pic.tempName
-      editPic.url=s3.getSignedUrl('getObject', params)
-      editPicsArray.push(editPic)
+    removeProp('editpictures',picJson);
+    let picArray=[picJson,...pic.editpictures];
+    each(picArray,function(pic,next) {
+      removeProp('url',pic)
+      fetchUrlFromRds(pic,function(url) {
+        pic.url=url
+        next()
+      })
+    },function(err) {
+      if(err) return console.log(err);
+      cb(null,picArray)
     })
-    cb(null,editPicsArray)
   })
 };
+
+function fetchUrlFromRds(pic,next) {
+  let picType=pic.picType?pic.picType:'original';
+  app.models.Picurls.get(picType+pic.tempName+'_url',function(err,value) {
+    if(err) return console.log(err)
+    params.Key=picType+'/'+picType+'_'+pic.tempName
+    next(s3.getSignedUrl('getObject', params))
+  })
+}
 

@@ -65,28 +65,6 @@ class UsersList extends React.Component {
         this.setState({user, addingUser: false})
     }
 
-    // usersList(users, classes) {
-    //     return <Table stickyHeader className={classes.table}>
-    //         <TableHead>
-    //             <TableRow>
-    //                 <TableCell>Name</TableCell>
-    //                 <TableCell>Email</TableCell>
-    //                 <TableCell>Added On</TableCell>
-    //             </TableRow>
-    //         </TableHead>
-    //         <TableBody>
-    //             {users.map((user, index) => (
-    //                 <TableRow key={index}>
-    //                     <TableCell component="th" scope="row">
-    //                         {user.firstName + ' ' + user.lastName}
-    //                     </TableCell>
-    //                     <TableCell>{user.email}</TableCell>
-    //                     <TableCell>{Moment(user.addedOn).format('MMM Do YY')}</TableCell>
-    //                 </TableRow>
-    //             ))}
-    //         </TableBody>
-    //     </Table>
-    // }
     render() {
         const {classes, userList, userData} = this.props;
         let {user, formError, addingUser} = this.state

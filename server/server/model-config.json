@@ -45,5 +45,9 @@
   "editpictures": {
     "dataSource": "tp_database",
     "public": true
+  },
+  "picurls": {
+    "dataSource": "tp_redis",
+    "public": true
   }
 }

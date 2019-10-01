@@ -7,15 +7,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Moment from "moment";
 
 function renderMsg(pic) {
-    let msg = pic.raw ? JSON.parse(pic.raw).message ? JSON.parse(pic.raw).message : 'Unknown Error' : pic.uploadStatus
-    return msg;
+    return pic.raw ? JSON.parse(pic.raw).message ? JSON.parse(pic.raw).message : 'Unknown Error' : pic.uploadStatus?pic.uploadStatus:'Please Wait'
 }
 
 const DisplayGridPics = function (props) {
     const {pics, classes, handlePicModel} = props
     return <GridList cellHeight={180} className={classes.gridList}>
         {(pics.length ? pics : Array.from(new Array(4))).map((pic, index) =>
-            <Tooltip key={index} title={pic.uploadStatus !== 'error' ? pic.uploadStatus : renderMsg(pic)}
+            <Tooltip key={index} title={pic.uploadStatus === 'error' ? renderMsg(pic):pic.uploadStatus?pic.uploadStatus:'Please Wait' }
                      placement="bottom">
                 <GridListTile onClick={() => handlePicModel && handlePicModel(true, pic)}>
                     {pic.uploadStatus && pic.uploadStatus !== 'inprogress' ?
@@ -30,7 +29,7 @@ const DisplayGridPics = function (props) {
                         subtitle={
                             pic.uploadStatus === 'done' ? <span>
                             Convertion Time: {pic.convertTime} ms<br/>
-                            Time: {Moment(pic.addedOn).format('MMM Do, YY h:mm: a')}
+                            Time: {Moment(Date.now('2019-10-01T06:07:46.000Z')).format('MMM Do, YY h:mm: a')}
                         </span> :
                                 pic.uploadStatus !== 'error' &&
                                 <React.Fragment>

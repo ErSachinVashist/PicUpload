@@ -1,6 +1,6 @@
 {
   "name": "pictures",
-  "base": "PersistedModel",
+  "base": "KeyValueModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
@@ -167,6 +167,11 @@
       "type": "hasMany",
       "model": "editpictures",
       "foreignKey": "pictureId"
+    },
+    "picurls": {
+      "type": "belongsTo",
+      "model": "picurls",
+      "foreignKey": "pictureId"
     }
   },
   "acls": [
@@ -187,7 +192,11 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": ["getOrgPics","addPicture","getAllEditPics"]
+      "property": [
+        "getOrgPics",
+        "addPicture",
+        "getAllEditPics"
+      ]
     }
   ],
   "methods": {}

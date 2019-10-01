@@ -29,10 +29,6 @@ module.exports = {
                             }
                             findTokens=tokenByPicId(collectionName,data.pictureId);
                             break;
-                        // case 'Auditlogs':
-                        //     name='/' + collectionName + '/' + method;
-                        //     findTokens=tokenByCompanyId(collectionName,data.companyId,data.userId);
-                        //     break;
             }
             findTokens.then(function (tokens) {
                 if(method==='DELETE'){
